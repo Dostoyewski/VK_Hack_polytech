@@ -112,6 +112,8 @@ def event_register(request, slug):
         event.save()
     return HttpResponseRedirect('/'+slug)
 
+
+#Редиректы
 def redirect_to_profile(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
