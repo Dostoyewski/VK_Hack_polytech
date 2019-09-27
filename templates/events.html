@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %}
+{% load render_table from django_tables2 %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
+		{% if user.is_authenticated %}
+			<b>Текущие зарегистированные мероприятия:</b> <br>
+			{% if length != 0 %}
+				{% for event in data %}<br>
+					<li>{{ event }}</li>
+				{% endfor %}<br>
+			{% else %}
+				Вы не зарегистрированы ни на одно грядущее мероприятие<br>
+			{% endif %}
+			<a href="/accounts/profile" class="btn btn-default">Профиль</a>
+			<a href="/accounts/profile/arhive" class="btn btn-default">Архив</a>
+		{% else %}
+		   Для того, чтобы увидеть свои мероприятия, <a href="{% url 'login'%}">войдите</a> или 
+		   <a href="/accounts/register">зарегистрирутесь.</a>
+		{% endif %} 
+		</div>
+    </div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+  </div>
+</div>
+
+{% endblock content %}

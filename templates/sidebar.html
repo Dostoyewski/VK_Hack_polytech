@@ -1,0 +1,22 @@
+{% block sidebar %}
+
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4 top">
+<div class="card #fafafa">
+	<div class="card-content #212121">
+		<span class="card-title">Тупо инфа</span>
+		<p>Блэт, кто-нибудь уже сделайте нормальный дизайн вместо этого уебища</p>
+	</div>
+	<div class="card-action">
+		{% if user.is_authenticated %}
+			<b>Пользователь:</b> {{ user.get_username }} <br>
+			<a href="/accounts/profile" class="btn waves-effect waves-light  red lighten-2">Профиль</a>
+			<a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-danger">Выход</a>
+		{% else %}
+			<a href="{% url 'login'%}" class="btn waves-effect waves-light  red lighten-2">Вход</a>
+			<a href="/accounts/register" class="btn waves-effect waves-light  red lighten-2">Регистрация</a>
+		{% endif %}
+	</div>
+</div>
+</div>
+{% endblock sidebar %}
