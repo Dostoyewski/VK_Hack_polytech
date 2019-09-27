@@ -1,0 +1,99 @@
+{% load static %}
+<html>
+    <head>
+        <title>Volonteers Inc.</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+		 <!-- Compiled and minified CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<style>
+		  body {
+			display: flex;
+			min-height: 100vh;
+			flex-direction: column;
+		  }
+
+		  main {
+			flex: 1 0 auto;
+		  }
+		  
+		  blockquote{
+			  margin: 20px 0;
+			  padding-left: 1.5rem;
+			  border-left: 5px solid #4a148c;
+		  }
+		</style>
+            
+    </head>
+    <body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<header class="page-footer black">
+		  <div class="container">
+            <div class="row">
+              <div class="col l6 s12" style="text-align: left; line-height: 70px;">
+                <a href="/" class="brand-logo">
+							<img style="height: 80px;" src="https://psv4.userapi.com/c848224/u116356824/docs/d10/294fd17710f6/logo.png?extra=A0S8uL-hjrfPIPQgNORNNtDloacxp7eUZiX9fZM7GB4N0E00l1ejv3ouNEWP9s4DDfnl1Mq1PjrdLMjoHlSW6Wtf7hWa5kATwvh4UA9gcw9I_ffv8j74frXoWzc9T2Xl3a71QI8N-p-nwA1EtS2vnBdQ">
+							</a>
+              </div>
+              <div class="col l4 offset-l2 s12" style="text-align: right; line-height: 70px;">
+                {% if user.is_authenticated %}
+						<p class=" white-text" style="font-size: 20px;">
+						<b>Вы вошли как:</b> {{ user.get_username }}&nbsp;&nbsp;
+						|
+						<a href="/accounts/profile" style="color: #ffffff"><b>Профиль</b></a>
+						|
+						<a href="{% url 'logout'%}?next={{request.path}}"  style="color: #ffffff"><b>Выход</b></a>
+						</p>
+					{% else %}
+						<p class="flow-text white-text">
+						<a href="{% url 'login'%}" style="color: #ffffff"><b>Вход</b></a>
+						|
+						<a href="/accounts/register"  style="color: #ffffff"><b>Регистрация</b></a>
+						</p>
+					{% endif %}
+              </div>
+            </div>
+          </div>
+		</header>
+		<main>
+		<br>
+		<div class="container">
+			<div class="row">
+				</div>
+				<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+					{% block content %}
+					{% endblock %}
+				</div>
+			</div>
+		</div>
+		</main>
+		<footer class="page-footer black">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2019 VK hackathon
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
+	</body>
+</html>
