@@ -3,11 +3,11 @@ from .models import Post, UserProfile
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import ChangeForm
+from .forms import ChangeForm, CommentForm, ApproveForm
 from django.contrib.auth.decorators import login_required
 import datetime
 import pytz
-from mes_confirmation import sent_verification_code
+from .mes_confirmation import sent_verification_code
 
 utc=pytz.UTC
 
@@ -39,10 +39,16 @@ def PostDetail(request, slug):
                                                 'author': event.author, 'created_on': event.created_on, 'content': event.content, 
                                                 'is_reg': is_reg, 'ka_ch': karma_check})
 
-def acc_det(request):
+def acc_det(request, slug):
     #Дефолтные поля не предусмотрены. Ввод ссылок только с http
     try:
-        a = UserProfile.objects.get(user_id=request.user.pk)
+        slpk = UserProfile.objects.get(user_url=slug).pk 
+        repk = UserProfile.objects.get(user_id=request.user.pk).pk
+        is_this_user = slpk == repk
+    except:
+        is_this_user = False
+    try:
+        a = UserProfile.objects.get(user_url=slug)
         pk = a.pk
         bio = a.bio
         location = a.location
@@ -52,7 +58,7 @@ def acc_det(request):
         nachname = a.nachname
         urlVK = a.urlVK
         phone = a.phone
-        mail = request.user.email
+        mail = a.user.email
     except:
         pk = None
         bio = None
@@ -68,9 +74,16 @@ def acc_det(request):
     return render(request, 'account.html', {'data': pk, 'bio': bio, 'location': location,
                                             'birth_date': birth_date, 'karma': karma,
                                             'vorname': vorname, 'nachname': nachname,
-                                            'urlVK': urlVK, 'phone': phone, 'mail': mail})
+                                            'urlVK': urlVK, 'phone': phone, 'mail': mail, 
+                                            'flag': is_this_user, 'slug': slug})
 
-def change(request):
+def change(request, slug):
+    try:
+        slpk = UserProfile.objects.get(user_url=slug).pk 
+        repk = UserProfile.objects.get(user_id=request.user.pk).pk
+        is_this_user = slpk == repk
+    except:
+        is_this_user = False
     if request.method == 'POST':
         form = ChangeForm(request.POST)
         if form.is_valid():
@@ -81,11 +94,12 @@ def change(request):
             profile.nachname = form.cleaned_data['nachname']
             profile.urlVK = form.cleaned_data['urlVK']
             profile.phone = form.cleaned_data['phone']
+            profile.extended_profile = True
             profile.save()
-            return HttpResponseRedirect('/accounts/profile')
+            return HttpResponseRedirect('/users/'+slug)
     else:
         form = ChangeForm()
-    return render(request, 'change.html', {'form': form})
+    return render(request, 'change.html', {'form': form, 'flag': is_this_user, 'slug': slug})
 
 def event_register(request, slug):
     '''Функция регистрации на событие'''
@@ -98,10 +112,37 @@ def event_register(request, slug):
         event.save()
     return HttpResponseRedirect('/'+slug)
 
+def redirect_to_profile(request):
+    try:
+        slug = UserProfile.objects.get(user_id=request.user.pk).user_url
+        return HttpResponseRedirect('/users/'+slug)
+    except:
+        return HttpResponseRedirect('/')
+
+def redirect_to_event(request):
+    try:
+        slug = UserProfile.objects.get(user_id=request.user.pk).user_url
+        return HttpResponseRedirect('/users/'+slug+'/events')
+    except:
+        return HttpResponseRedirect('/')
+
+def redirect_to_change(request):
+    try:
+        slug = UserProfile.objects.get(user_id=request.user.pk).user_url
+        return HttpResponseRedirect('/users/'+slug+'/change')
+    except:
+        return HttpResponseRedirect('/')
+
+def redirect_to_arhive(request):
+    try:
+        slug = UserProfile.objects.get(user_id=request.user.pk).user_url
+        return HttpResponseRedirect('/users/'+slug+'/arhive')
+    except:
+        return HttpResponseRedirect('/')
+
 #Дописать функцию сортировки!!
-@login_required
-def my_events(request):
-    profile = UserProfile.objects.get(user_id=request.user.pk)
+def my_events(request, slug):
+    profile = UserProfile.objects.get(user_url=slug)
     evreg = profile.events_registered.split(sep=', ')
     names = []
     now = utc.localize(datetime.datetime.now())
@@ -114,9 +155,8 @@ def my_events(request):
             pass
     return render(request, 'events.html', {'data': names, 'length': len(names)})
 
-@login_required
-def my_arhive(request):
-    profile = UserProfile.objects.get(user_id=request.user.pk)
+def my_arhive(request, slug):
+    profile = UserProfile.objects.get(user_url=slug)
     evreg = profile.events_registered.split(sep=', ')
     names = []
     now = utc.localize(datetime.datetime.now())
@@ -128,3 +168,32 @@ def my_arhive(request):
         except ValueError:
             pass
     return render(request, 'arhive.html', {'data': names, 'length': len(names)})
+
+'''def comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment_profile = UserProfile.objects.get(vorname=form.cleaned_data['vorname'], nachname=form.cleaned_data['nachname']).pk
+            comment = form.cleaned_data['comment']
+            ball = form.cleaned_data['ball']
+            code = sent_verification_code(form.cleaned_data['phone'])
+            req = KarmaChange(idd=comment_profile, vorname=form.cleaned_data['vorname'], nachname=form.cleaned_data['nachname'],
+                                ball=ball, code=code, comment=comment)
+            req.save()
+            return HttpResponseRedirect('/comment/approve')
+    else:
+        form = CommentForm()
+    return render(request, 'comment.html', {'form': form})
+
+def approve_comment(request):
+    if request.method == 'POST':
+        form = ApproveForm(request.POST)
+        if form.is_valid():
+            scode = form.cleaned_data['code']
+            if scode == code:
+                return HttpResponseRedirect('/')
+            else:
+                form = ApproveForm()
+    else:
+        form = ApproveForm()
+    return render(request, 'comment_approve.html', {'form': form, 'code': code})'''

@@ -2,7 +2,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-8 left  top">
+		<div class="col-md-6 left  top">
 			<div class="card #fafafa">
 				<div class="card-content #212121">
 					<h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
@@ -15,7 +15,7 @@
 						<a href="register" class="btn btn-danger">Зарегистрироваться</a>
 					{% else %}
 						Для того, чтобы зарегистрироваться на это мероприятие, <a href="{% url 'login'%}">войдите</a> или 
-						<a href="/accounts/register">зарегистрирутесь.</a>
+						<a href="/accounts/register"><p class="flow-text">зарегистрирутесь</p>.</a>
 					{% endif %} 
 				</div>
 			</div>

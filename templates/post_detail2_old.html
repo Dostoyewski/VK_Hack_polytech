@@ -5,9 +5,13 @@
 			<div class="card #fafafa">
 				<div class="card-content #212121">
 					<h1>{% block title %} {{ title }} {% endblock title %}</h1>
+					<blockquote>
+					a
+					</blockquote>
 					<p class="event_date"><b>Начало мероприятия:</b> {{ beginning_at }} <br> <b>Конец мероприятия:</b> {{ ending_at }}</p>
 					<p class=" text-muted">{{ author }} | {{ created_on }}</p>
 					<p class="card-text ">{{ content | safe }}</p>
+					
 				</div>
 				<div class="card-action">
 					{% if user.is_authenticated %}

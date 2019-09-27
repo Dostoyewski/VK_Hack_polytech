@@ -1,33 +1,29 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container">
-	<div class="row">
-		<div class="col-md-8 left  top">
 			<div class="card #fafafa">
 				<div class="card-content #212121">
 					<h1>{% block title %} {{ title }} {% endblock title %}</h1>
+					<blockquote>
 					<p class="event_date"><b>Начало мероприятия:</b> {{ beginning_at }} <br> <b>Конец мероприятия:</b> {{ ending_at }}</p>
 					<p class=" text-muted">{{ author }} | {{ created_on }}</p>
-					<p class="card-text ">{{ content | safe }}</p>
+					</blockquote>
+					<p class="card-text flow-text">{{ content | safe }}</p>
 				</div>
 				<div class="card-action">
 					{% if user.is_authenticated %}
 						{% if is_reg and ka_ch %}
-							<a href="event_register" class="btn btn-danger" disabled>Вы уже зарегистрированы</a>
+							<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Вы уже зарегистрированы</a>
 						{% else %}
 							{% if ka_ch %}
-								<a href="event_register" class="btn btn-danger">Зарегистрироваться</a>
+								<a href="event_register" class="btn waves-effect waves-light  purple darken-4">Зарегистрироваться</a>
 							{% else %}
-								<a href="event_register" class="btn btn-danger" disabled>Для регистрации на мероприятие не хватает кармы</a>
+								<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Для регистрации на мероприятие не хватает кармы</a>
 							{% endif %}
 						{% endif %}
 					{% else %}
-					   <b>Для того, чтобы зарегистрироваться на это мероприятие, <a href="{% url 'login'%}" class="btn waves-effect waves-light  red lighten-2">войдите</a> или 
-					   <a href="/accounts/register" class="btn waves-effect waves-light  red lighten-2">зарегистрирутесь.</a></b>
+						<p class="flow-text">
+						<b>Для того, чтобы зарегистрироваться на это мероприятие,</b> <a href="{% url 'login'%}" style="color: #4a148c; font-size: 20px;">войдите</a><b>или</b> <a href="/accounts/register" style="color: #4a148c;">зарегистрирутесь.</a>
+						</p>
 					{% endif %} 
 				</div>
 			</div>
-		</div>
-    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
-  </div>
-</div>
 {% endblock content %}
