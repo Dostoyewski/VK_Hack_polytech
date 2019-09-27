@@ -35,15 +35,12 @@
             <div class="row">
               <div class="col l6 s12" style="text-align: left; line-height: 70px;">
                 <a href="/" class="brand-logo">
-							<!--
-							<img style="height: 50px;" src="https://psv4.userapi.com/c856336/u116356824/docs/d8/e3b1a7bd2368/logo2-removebg-preview.png?extra=5gV5YUjPBKIG6RO3e3IbbnzYE4bfiWfattSJNpyJUX1DjQOAiTTAkXzBYbLN7eSKOWM_6L9lJDqM0xUapzIw3b1EhJ21c2tZQRdfvGwRwR1P8iuRxKyzOPuG0tW9UV2me0Jvh1hUJUXysq1pFxRSF_Ze">
-							-->
 							<img style="height: 80px;" src="https://psv4.userapi.com/c848224/u116356824/docs/d10/294fd17710f6/logo.png?extra=A0S8uL-hjrfPIPQgNORNNtDloacxp7eUZiX9fZM7GB4N0E00l1ejv3ouNEWP9s4DDfnl1Mq1PjrdLMjoHlSW6Wtf7hWa5kATwvh4UA9gcw9I_ffv8j74frXoWzc9T2Xl3a71QI8N-p-nwA1EtS2vnBdQ">
 							</a>
               </div>
               <div class="col l4 offset-l2 s12" style="text-align: right; line-height: 70px;">
                 {% if user.is_authenticated %}
-						<p class="flow-text white-text">
+						<p class=" white-text" style="font-size: 20px;">
 						<b>Вы вошли как:</b> {{ user.get_username }}&nbsp;&nbsp;
 						|
 						<a href="/accounts/profile" style="color: #ffffff"><b>Профиль</b></a>
