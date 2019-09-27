@@ -23,5 +23,5 @@
             </intent-filter>
         </activity>
     </application>
-
+    <user-permission android:volapp= "android.permission.INTERNET"/>
 </manifest>
