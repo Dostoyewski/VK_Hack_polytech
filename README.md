@@ -1,0 +1,1 @@
+# VK_Hack_polytech
