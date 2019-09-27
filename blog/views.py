@@ -7,7 +7,7 @@ from .forms import ChangeForm
 from django.contrib.auth.decorators import login_required
 import datetime
 import pytz
-from mes_confirmation import sent_verification_code
+from .mes_confirmation import sent_verification_code
 
 utc=pytz.UTC
 
