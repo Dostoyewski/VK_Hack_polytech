@@ -1,28 +1,24 @@
 {% extends 'base.html' %} {% block content %}
 {% load render_table from django_tables2 %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 card mb-4  mt-3 left  top">
       <div class="card-body">
         <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
 		{% if user.is_authenticated %}
-			<b>Текущие зарегистированные мероприятия:</b> <br>
 			{% if length != 0 %}
-				{% for event in data %}<br>
-					<li>{{ event }}</li>
-				{% endfor %}<br>
+			<ul class="collection with-header">
+			<li class="collection-header"><h4><b>Текущие зарегистированные мероприятия</b></h4></li>
+				    {% for event in data %}
+						<li class="collection-item"><p class="flow-text">{{ event }}</p></li>
+					{% endfor %}
+			</ul>
 			{% else %}
-				Вы не зарегистрированы ни на одно грядущее мероприятие<br>
+				<p class="flow-text">Вы не зарегистрированы ни на одно грядущее мероприятие</p><br>
 			{% endif %}
-			<a href="/accounts/profile" class="btn btn-default">Профиль</a>
-			<a href="/accounts/profile/arhive" class="btn btn-default">Архив</a>
+			<a href="/accounts/profile" class="btn waves-effect waves-light  purple darken-4">Профиль</a>
+			<a href="/accounts/profile/arhive" class="btn waves-effect waves-light  purple darken-4">Архив</a>
 		{% else %}
-		   Для того, чтобы увидеть свои мероприятия, <a href="{% url 'login'%}">войдите</a> или 
-		   <a href="/accounts/register">зарегистрирутесь.</a>
+		   <p class="flow-text">Для того, чтобы увидеть свои мероприятия, <a href="{% url 'login'%}">войдите</a> или 
+		   <a href="/accounts/register">зарегистрирутесь.</a></p>
 		{% endif %} 
 		</div>
-    </div>
-  </div>
-</div>
 
 {% endblock content %}
