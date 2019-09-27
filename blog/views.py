@@ -26,8 +26,10 @@ def PostDetail(request, slug):
     event = Post.objects.get(slug=slug)
     is_reg = False
     karma_check = True
+    is_full = False
     try:
         profile = UserProfile.objects.get(user_id=request.user.pk)
+        is_full = profile.extended_profile
         evreg = profile.events_registered.split(sep=', ')
         if str(event.pk) in evreg:
             is_reg = True
