@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+<form action="/accounts/profile/change" method="post">
+{% csrf_token %}
+	<div class="field-title">
+		{{ form.as_p }}
+	</div>
+    <input type="submit" value="OK">
+</form>
+{% endblock content %}

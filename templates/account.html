@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %}
+{% load render_table from django_tables2 %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
+		{% if user.is_authenticated %}
+			<p class="event_date"><b>Ваш ID:</b> {{ data }} <br> 
+			<b>Имя:</b> {{ vorname }} <br>
+			<b>Фамилия:</b> {{ nachname }} <br>
+			<b>Краткая информация:</b> {{ bio }} <br>
+			<b>Город:</b> {{ location }} <br>
+			<b>Дата рождения:</b> {{ birth_date }} <br>
+			<b>Карма:</b> {{ karma }} <br>
+			<b>Ссылка ВК:</b> <a href={{ urlVK }} <br>{{ urlVK }}</a><br>
+			<b>Телефон:</b> {{ phone }} <br>
+			<b>Электронная почта:</b> {{ mail }} <br>
+		{% else %}
+		   Для того, чтобы увидеть свой профиль, <a href="{% url 'login'%}">войдите</a> или 
+		   <a href="/accounts/register">зарегистрирутесь.</a>
+		{% endif %} 
+		</div>
+		{% if user.is_authenticated %}
+			<a href="/accounts/profile/change" class="btn btn-default">Изменить личные данные</a>
+			<a href="/accounts/profile/events" class="btn btn-default">Мероприятия</a>
+		{% endif %}
+    </div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-8 left  top">
+			<div class="card #fafafa">
+				<div class="card-content #212121">
+					<h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
+					<p class="event_date"><b>Начало мероприятия:</b> {{ post.beginning_at }} <br> <b>Конец мероприятия:</b> {{ post.ending_at }}</p>
+					<p class=" text-muted">{{ post.author }} | {{ post.created_on }}</p>
+					<p>{{ object.content | safe }}</p>
+				</div>
+				<div class="card-action">
+					{% if user.is_authenticated %}
+						<a href="register" class="btn btn-danger">Зарегистрироваться</a>
+					{% else %}
+						Для того, чтобы зарегистрироваться на это мероприятие, <a href="{% url 'login'%}">войдите</a> или 
+						<a href="/accounts/register">зарегистрирутесь.</a>
+					{% endif %} 
+				</div>
+			</div>
+		</div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+  </div>
+</div>
+
+{% endblock content %}
