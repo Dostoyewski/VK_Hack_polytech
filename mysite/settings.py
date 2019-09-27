@@ -36,7 +36,7 @@ DEBUG = True
 
 SITE_ID = 3
 
-ALLOWED_HOSTS = ['81.27.252.234']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
