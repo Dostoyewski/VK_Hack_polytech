@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 left  top">
+			<div class="card #fafafa">
+				<div class="card-content #212121">
+					<h1>{% block title %} {{ object.name }} {% endblock title %}</h1>
+					<p>{{ object.description | safe }}</p>
+					<img src="{{ object.image.url }}" width="400" height="200" alt="Computer Hope">
+				</div>
+			</div>
+		</div>
+  </div>
+</div>
+
+{% endblock content %}

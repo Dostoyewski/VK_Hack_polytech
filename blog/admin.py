@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, UserProfile
+from .models import Post, UserProfile, Museum, MuseumMember
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -11,5 +11,14 @@ class PostAdmin(admin.ModelAdmin):
 class UserProfiles(admin.ModelAdmin):
     list_display = ('user', 'location', 'bio', 'birth_date')
 
+class MuseumProfiles(admin.ModelAdmin):
+    list_display = ('user', 'name', 'description', 'image', 'members', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+
+class ModeratorProfiles(admin.ModelAdmin):
+    list_display = ('user', 'museum', 'vorname', 'nachname', 'role', 'image')
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(UserProfile, UserProfiles)
+admin.site.register(Museum, MuseumProfiles)
+admin.site.register(MuseumMember, ModeratorProfiles)

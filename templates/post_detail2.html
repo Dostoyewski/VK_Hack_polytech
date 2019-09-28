@@ -10,13 +10,17 @@
 				</div>
 				<div class="card-action">
 					{% if user.is_authenticated %}
-						{% if is_reg and ka_ch %}
+						{% if is_reg %}
 							<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Вы уже зарегистрированы</a>
 						{% else %}
-							{% if ka_ch %}
-								<a href="event_register" class="btn waves-effect waves-light  purple darken-4">Зарегистрироваться</a>
+							{% if timeOK %}
+								{% if ka_ch %}
+									<a href="event_register" class="btn waves-effect waves-light  purple darken-4">Зарегистрироваться</a>
+								{% else %}
+									<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Для регистрации на мероприятие не хватает кармы</a>
+								{% endif %}
 							{% else %}
-								<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Для регистрации на мероприятие не хватает кармы</a>
+								<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Регистрация закрыта</a>
 							{% endif %}
 						{% endif %}
 					{% else %}

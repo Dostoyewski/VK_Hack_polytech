@@ -69,6 +69,7 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     beginning_at = models.DateTimeField()
+    reg_ending_at = models.DateTimeField()
     ending_at = models.DateTimeField()
     users_registered = models.CharField(max_length=10000, blank=True)
     min_karma = models.FloatField(default=0)
@@ -82,12 +83,14 @@ class Post(models.Model):
 class Museum(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=True)
-    description = models.TextField(max_length=500, blank=True, default='Не заполнено')
-    image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
+    slug = models.SlugField(max_length=200, unique=True)
+    description = models.TextField(max_length=1200, blank=True, default='Не заполнено')
+    image = models.ImageField(upload_to = 'images', default = 'images/no-img.jpg')
     members = models.TextField(max_length=500, blank=True, default='')
 
 class MuseumMember(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    museum = models.IntegerField(blank=True)
     vorname = models.CharField(max_length=20, blank=True)
     nachname = models.CharField(max_length=50, blank=True)
     role = models.CharField(max_length=50, blank=True)

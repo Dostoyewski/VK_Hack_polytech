@@ -1,5 +1,5 @@
 from django.views import generic
-from .models import Post, UserProfile
+from .models import Post, UserProfile, Museum
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
@@ -21,8 +21,31 @@ class PostList(generic.ListView):
 #    model = Post
 #    template_name = 'post_detail.html'
 
+class MuseumDetail(generic.DetailView):
+    model = Museum
+    template_name = 'museum_detail.html'
+
+def MuseumsList(request):
+    last_pk = Museum.objects.last().pk+1
+    mprofiles = []
+    for i in range(last_pk):
+        try:
+            mprofiles.append(Museum.objects.get(pk=i))
+        except:
+            pass
+    return render(request, 'museums.html', {'mprofiles': mprofiles})
+
 def PostDetail(request, slug):
-    if slug == 'users':
+    if slug == 'museums':
+        last_pk = Museum.objects.last().pk+1
+        mprofiles = []
+        for i in range(last_pk):
+            try:
+                mprofiles.append(Museum.objects.get(pk=i))
+            except:
+                pass
+        return render(request, 'museums.html', {'mprofiles': mprofiles})
+    elif slug == 'users':
         last_pk = UserProfile.objects.last().pk+1
         uprofiles = []
         for i in range(0, last_pk):
@@ -37,6 +60,7 @@ def PostDetail(request, slug):
         karma_check = True
         is_full = False
         can_vote = False
+        timeOK = False
         users_ids = event.users_registered.split(sep=', ')
         uprofiles = []
         for idd in users_ids:
@@ -47,18 +71,19 @@ def PostDetail(request, slug):
         try:
             profile = UserProfile.objects.get(user_id=request.user.pk)
             is_full = profile.extended_profile
-            if profile.karma_counts > 0:
-                can_vote = True
-            evreg = profile.events_registered.split(sep=', ')
-            if str(event.pk) in evreg:
+            ureg = event.users_registered.split(sep=', ')
+            if str(request.user.pk) in ureg:
                 is_reg = True
             if profile.karma < event.min_karma:
                 karma_check = False
+            if utc.localize(datetime.datetime.now()) <= event.reg_ending_at:
+                timeOK = True
         except:
             pass
         return render(request, 'post_detail2.html', {'title': event.title, 'beginning_at': event.beginning_at, 'ending_at': event.ending_at,
                                                     'author': event.author, 'created_on': event.created_on, 'content': event.content, 
-                                                    'is_reg': is_reg, 'ka_ch': karma_check, 'uprofiles': uprofiles, 'can_vote': can_vote})
+                                                    'is_reg': is_reg, 'ka_ch': karma_check, 'uprofiles': uprofiles, 'can_vote': can_vote, 
+                                                    'timeOK': timeOK})
 
 def acc_det(request, slug):
     #Дефолтные поля не предусмотрены. Ввод ссылок только с http
@@ -137,9 +162,10 @@ def change(request, slug):
 def event_register(request, slug):
     '''Функция регистрации на событие'''
     event = Post.objects.get(slug=slug)
+    users = event.users_registered.split(sep=', ')
     profile = UserProfile.objects.get(user_id=request.user.pk)
     now = utc.localize(datetime.datetime.now())
-    if profile.karma >= event.min_karma and now <= event.beginning_at:
+    if profile.karma >= event.min_karma and now <= event.beginning_at and not str(request.user.pk) in users:
         event.users_registered += str(request.user.pk)+', '
         profile.events_registered += str(event.pk) + ', '
         profile.save()
