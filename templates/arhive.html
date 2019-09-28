@@ -2,7 +2,6 @@
 {% load render_table from django_tables2 %}
       <div class="card-body">
         <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
-		{% if user.is_authenticated %}
 			  <ul class="collection with-header">
 				<li class="collection-header"><h4><b>Прошедшие мероприятия</b></h4></li>
 				
@@ -12,14 +11,10 @@
 				{% endfor %}
 				</ul>
 			{% else %}
-				Вы не участвовали ни в одном мероприятии<br>
+				Список прошедших мероприятий пуст<br>
 			{% endif %}
 			<a href="/accounts/profile" class="btn waves-effect waves-light  purple darken-4">Профиль</a>
 			<a href="/accounts/profile/events" class="btn waves-effect waves-light  purple darken-4">Мероприятия</a>
-		{% else %}
-		   Для того, чтобы увидеть свои мероприятия, <a href="{% url 'login'%}">войдите</a> или 
-		   <a href="/accounts/register">зарегистрирутесь.</a>
-		{% endif %} 
 		</div>
 
 {% endblock content %}
