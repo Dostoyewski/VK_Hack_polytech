@@ -87,14 +87,20 @@ def change(request, slug):
     except:
         is_this_user = False
     if request.method == 'POST':
-        form = ChangeForm(request.POST)
+        profile = UserProfile.objects.get(user_id=request.user.pk)
+        form = ChangeForm(request.POST, initial={'bio': profile.bio, 'vorname': profile.vorname, 'nachname': profile.nachname,
+                                                 'location': profile.location, 'birth_date': profile.birth_date, 'urlVK': profile.urlVK,
+                                                 'phone': profile.phone})
         if form.is_valid():
             profile = UserProfile.objects.get(user_id=request.user.pk)
             profile.bio = form.cleaned_data['bio']
             profile.birth_date = form.cleaned_data['birth_date']
             profile.vorname = form.cleaned_data['vorname']
             profile.nachname = form.cleaned_data['nachname']
-            profile.urlVK = form.cleaned_data['urlVK']
+            if form.cleaned_data['urlVK'][:7] == 'http://':
+                profile.urlVK = form.cleaned_data['urlVK']
+            else:
+                profile.urlVK = 'http://' + form.cleaned_data['urlVK']
             profile.phone = form.cleaned_data['phone']
             profile.extended_profile = True
             profile.location = form.cleaned_data['location']
@@ -103,7 +109,10 @@ def change(request, slug):
             profile.save()
             return HttpResponseRedirect('/users/'+slug)
     else:
-        form = ChangeForm()
+        profile = UserProfile.objects.get(user_id=request.user.pk)
+        form = ChangeForm(initial={'bio': profile.bio, 'vorname': profile.vorname, 'nachname': profile.nachname,
+                                                 'location': profile.location, 'birth_date': profile.birth_date, 'urlVK': profile.urlVK,
+                                                 'phone': profile.phone})
     return render(request, 'change.html', {'form': form, 'flag': is_this_user, 'slug': slug})
 
 def event_register(request, slug):
