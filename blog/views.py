@@ -3,7 +3,7 @@ from .models import Post, UserProfile
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import ChangeForm, CommentForm, ApproveForm
+from .forms import ChangeForm, CommentForm, ApproveForm, RegCommentForm
 from django.contrib.auth.decorators import login_required
 import datetime
 import pytz
@@ -27,9 +27,19 @@ def PostDetail(request, slug):
     is_reg = False
     karma_check = True
     is_full = False
+    can_vote = False
+    users_ids = event.users_registered.split(sep=', ')
+    uprofiles = []
+    for idd in users_ids:
+        try:
+            uprofiles.append(UserProfile.objects.get(user_id=int(idd)))
+        except:
+            pass
     try:
         profile = UserProfile.objects.get(user_id=request.user.pk)
         is_full = profile.extended_profile
+        if profile.karma_counts > 0:
+            can_vote = True
         evreg = profile.events_registered.split(sep=', ')
         if str(event.pk) in evreg:
             is_reg = True
@@ -39,7 +49,7 @@ def PostDetail(request, slug):
         pass
     return render(request, 'post_detail2.html', {'title': event.title, 'beginning_at': event.beginning_at, 'ending_at': event.ending_at,
                                                 'author': event.author, 'created_on': event.created_on, 'content': event.content, 
-                                                'is_reg': is_reg, 'ka_ch': karma_check})
+                                                'is_reg': is_reg, 'ka_ch': karma_check, 'uprofiles': uprofiles, 'can_vote': can_vote})
 
 def acc_det(request, slug):
     #Дефолтные поля не предусмотрены. Ввод ссылок только с http
@@ -185,22 +195,36 @@ def my_arhive(request, slug):
             pass
     return render(request, 'arhive.html', {'data': names, 'length': len(names)})
 
-'''def comment(request):
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment_profile = UserProfile.objects.get(vorname=form.cleaned_data['vorname'], nachname=form.cleaned_data['nachname']).pk
-            comment = form.cleaned_data['comment']
-            ball = form.cleaned_data['ball']
-            code = sent_verification_code(form.cleaned_data['phone'])
-            req = KarmaChange(idd=comment_profile, vorname=form.cleaned_data['vorname'], nachname=form.cleaned_data['nachname'],
-                                ball=ball, code=code, comment=comment)
-            req.save()
-            return HttpResponseRedirect('/comment/approve')
-    else:
-        form = CommentForm()
-    return render(request, 'comment.html', {'form': form})
+@login_required
+def karmaplus(request, slug):
+    now = utc.localize(datetime.datetime.now())
+    user_profile = UserProfile.objects.get(user_id=request.user.pk)
+    comment_profile = UserProfile.objects.get(user_url=slug)
+    if now.hour == 0 and now.minute == 0:
+        user_profile.karma_counts = 5
+        user_profile.save()
+    if user_profile.karma >= 0 and user_profile != comment_profile and user_profile.karma_counts > 0:
+        comment_profile.karma += 0.1
+        user_profile.karma_counts -= 1
+        user_profile.save()
+        comment_profile.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+@login_required
+def karmaminus(request, slug):
+    now = utc.localize(datetime.datetime.now())
+    user_profile = UserProfile.objects.get(user_id=request.user.pk)
+    comment_profile = UserProfile.objects.get(user_url=slug)
+    if now.hour == 0 and now.minute == 0:
+        user_profile.karma_counts = 5
+        user_profile.save()
+    if user_profile.karma >= 0 and user_profile != comment_profile and user_profile.karma_counts > 0:
+        comment_profile.karma -= 0.1
+        user_profile.karma_counts -= 1
+        user_profile.save()
+        comment_profile.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+'''
 def approve_comment(request):
     if request.method == 'POST':
         form = ApproveForm(request.POST)

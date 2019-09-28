@@ -14,10 +14,11 @@ STATUS = (
 class UserProfile(models.Model):
     #Неизменяемые
     events_registered = models.CharField(max_length=1000, blank=True)
-    karma = models.IntegerField(default=0)
+    karma = models.FloatField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #Изменяемые
+    karma_counts = models.IntegerField(default=5)
     user_url = models.SlugField(max_length=200, unique=True)
+    #Изменяемые
     bio = models.TextField(max_length=500, blank=True, default='Не заполнено')
     location = models.CharField(max_length=30, default='Не указан')
     birth_date = models.DateField(null=True, blank=True)
@@ -25,6 +26,23 @@ class UserProfile(models.Model):
     nachname = models.CharField(max_length=50, blank=True)
     urlVK = models.CharField(max_length=100, blank=True)
     phone = PhoneNumberField(null=False, blank=True)
+    #Место учебы/работы
+    work_place = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    #Специальность по диплому
+    specialization = models.TextField(max_length=500, blank=True, default='Не заполнено')
+	#Какими иностранными языками Вы владеете (укажите уровень владения)? 
+    foreigns_lang = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    #Есть ли у вас опыт волонтерства? Если есть, то опишите его. Если нет - это не страшно)) *
+    volonteer_exp = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    #Есть ли у вас опыт работы с детьми? Если есть, то опишите его *
+    children_exp = models.TextField(max_length=500, blank=True, default='Не заполнено')
+	#Какие дополнительные навыки могут быть полезны в сотрудничестве с Политехом? (возможно, вы прекрасно фотографируете или умеете красиво и профессионально говорить со сцены, напишите об этом!) *
+    additional_skills = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    #Какие ожидания у вас от волонтерства в проектах Политехнического музея? Что волонтерство может дать лично вам?
+    expectations = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    #Есть ли у Вас медицинские противопоказания, аллергия, в т.ч. на животных?
+    allergy = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    #Согласие на обработку персональных данных в соответствие с Федеральным законом РФ от 27 июля 2006 года № 152-ФЗ «О персональных данных» *Если вы не даете согласия на обработку данных, то в соответствии с законом, все предоставленные вами данные будут немедленно удалены, и вы не будете внесены в список участников конференции *
     extended_profile = models.BooleanField(default=False)
     # ЭТА ХУИТА НЕ РАБОТАЕТ
     #profile_image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')

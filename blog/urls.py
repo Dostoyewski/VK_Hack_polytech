@@ -14,4 +14,6 @@ urlpatterns = [
     path('<slug:slug>/event_register/', views.event_register, name='registration'),
     path('users/<slug:slug>/', views.acc_det, name='account'),
     path('users/<slug:slug>/change', views.change, name='change_data'),
+    path('users/<slug:slug>/karmaplus', views.karmaplus, name='karmaplus'),
+    path('users/<slug:slug>/karmaminus', views.karmaminus, name='karmaminus'),
 ] 

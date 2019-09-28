@@ -16,9 +16,9 @@
 		</div>
 		<div class="card-action">
 		{% if user.is_authenticated and flag %}
-			<a href="/accounts/profile/change" class="btn waves-effect waves-light  purple darken-4">Изменить личные данные</a>
+			<a href="/users/{{slug}}/change" class="btn waves-effect waves-light  purple darken-4">Изменить личные данные</a>
 		{% endif %}
-		<a href="/accounts/profile/events" class="btn waves-effect waves-light  purple darken-4">Мероприятия</a></p>
+		<a href="/users/{{slug}}/events" class="btn waves-effect waves-light  purple darken-4">Мероприятия</a></p>
 		</div>
 	  </div>
 {% endblock content %}

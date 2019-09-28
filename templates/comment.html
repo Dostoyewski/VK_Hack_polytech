@@ -1,9 +1,10 @@
 {% extends 'base.html' %} {% block content %}
-<form action="/comment/approve" method="post">
+<form action="/users/{{slug}}/" method="post">
 {% csrf_token %}
 	<div class="field-title">
 		{{ form.as_p }}
 	</div>
     <input type="submit" value="OK">
 </form>
+{{ comment }}
 {% endblock content %}
