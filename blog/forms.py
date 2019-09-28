@@ -2,6 +2,8 @@ from django import forms
 from phonenumber_field.formfields import PhoneNumberField
 
 class ChangeForm(forms.Form):
+    # ЭТА ХУИТА НЕ РАБОТАЕТ
+    #profile_image = forms.ImageField(label="Аватар", )
     vorname = forms.CharField(max_length=20, label='Имя')
     nachname = forms.CharField(max_length=50, label='Фамилия')
     bio = forms.CharField(max_length=500, label='Статус')

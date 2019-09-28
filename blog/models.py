@@ -26,6 +26,9 @@ class UserProfile(models.Model):
     urlVK = models.CharField(max_length=100, blank=True)
     phone = PhoneNumberField(null=False, blank=True)
     extended_profile = models.BooleanField(default=False)
+    # ЭТА ХУИТА НЕ РАБОТАЕТ
+    #profile_image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
+
 
     def __str__(self):  
         return "%s's profile" % self.user
