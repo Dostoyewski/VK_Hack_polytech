@@ -3,7 +3,7 @@
 {% block content %}
 
 				{% for post in post_list %}
-					<div class="card #fafafa hoverable hide-on-small-only horizontal">
+					<div class="card #fafafa hoverable horizontal hide-on-med-and-down">
 						<div class="card-image">
 						  <img src="{{ post.image.url }}">
 						</div>
@@ -18,7 +18,7 @@
 						</div>
 						</div>
 					</div>
-					<div class="card #fafafa hoverable hide-on-med-and-up">
+					<div class="card #fafafa hoverable hide-on-large-only">
 						<div class="card-image">
 							<img src="{{ post.image.url }}">
 						</div>
