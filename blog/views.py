@@ -119,28 +119,28 @@ def event_register(request, slug):
 def redirect_to_profile(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug)
+        return HttpResponseRedirect('/users/'+slug+'/')
     except:
         return HttpResponseRedirect('/')
 
 def redirect_to_event(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/events')
+        return HttpResponseRedirect('/users/'+slug+'/events/')
     except:
         return HttpResponseRedirect('/')
 
 def redirect_to_change(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/change')
+        return HttpResponseRedirect('/users/'+slug+'/change/')
     except:
         return HttpResponseRedirect('/')
 
 def redirect_to_arhive(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/arhive')
+        return HttpResponseRedirect('/users/'+slug+'/arhive/')
     except:
         return HttpResponseRedirect('/')
 
