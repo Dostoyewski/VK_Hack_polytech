@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 import pytz
 from .mes_confirmation import sent_verification_code
+import pandas as pd
 
 utc=pytz.UTC
 
@@ -217,28 +218,25 @@ def redirect_to_arhive(request):
 
 def my_events(request, slug):
     profile = UserProfile.objects.get(user_url=slug)
-    evreg = profile.events_registered.split(sep=', ')
+    evreg = profile.events_registered.split(sep=',')
     names = []
     now = utc.localize(datetime.datetime.now())
     for key in evreg:
         try:
-            key = int(key)
-            if Post.objects.get(pk=key).ending_at > now:
-                names.append('"'+Post.objects.get(pk=key).title+'"' + ', ' + 'дата начала: ' + str(Post.objects.get(pk=key).beginning_at))
+            names.append('"'+Post.objects.get(pk=int(key)).title+'"' + ', ' + 'дата начала: ' + str(Post.objects.get(pk=int(key)).beginning_at))
         except ValueError:
             pass
-    return render(request, 'events.html', {'data': names, 'length': len(names)})
+    return render(request, 'events.html', {'data': names, 'length': len(evreg)})
 
 def my_arhive(request, slug):
     profile = UserProfile.objects.get(user_url=slug)
-    evreg = profile.events_registered.split(sep=', ')
+    evreg = profile.events_registered.split(sep=',')
     names = []
     now = utc.localize(datetime.datetime.now())
     for key in evreg:
         try:
-            key = int(key)
-            if Post.objects.get(pk=key).ending_at < now:
-                names.append('"'+Post.objects.get(pk=key).title+'"' + ', ' + 'дата начала: ' + str(Post.objects.get(pk=key).beginning_at))
+            if Post.objects.get(pk=int(key)).ending_at < now:
+                names.append('"'+Post.objects.get(pk=int(key)).title+'"' + ', ' + 'дата начала: ' + str(Post.objects.get(pk=int(key)).beginning_at))
         except ValueError:
             pass
     return render(request, 'arhive.html', {'data': names, 'length': len(names)})
@@ -256,16 +254,17 @@ def karmaminus(request, slug):
     comment_profile.karma -= 0.1
     comment_profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-'''
-def approve_comment(request):
-    if request.method == 'POST':
-        form = ApproveForm(request.POST)
-        if form.is_valid():
-            scode = form.cleaned_data['code']
-            if scode == code:
-                return HttpResponseRedirect('/')
-            else:
-                form = ApproveForm()
-    else:
-        form = ApproveForm()
-    return render(request, 'comment_approve.html', {'form': form, 'code': code})'''
+
+def get_tables(request, slug):
+    event = Post.objects.get(slug=slug)
+    users = event.users_registered.split(sep=', ')
+    uprofiles = []
+    for idd in users:
+        try:
+            uprofiles.append([UserProfile.objects.get(user_id=int(idd)).nachname, UserProfile.objects.get(user_id=int(idd)).vorname, UserProfile.objects.get(user_id=int(idd)).phone, UserProfile.objects.get(user_id=int(idd)).user.email])
+        except:
+            pass
+    df = pd.DataFrame(uprofiles)
+    df.to_excel('media/table.xlsx')
+    return HttpResponseRedirect('/media/table.xlsx')
+    

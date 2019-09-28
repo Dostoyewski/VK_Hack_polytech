@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.PostList.as_view(), name='home'),
     #path('<slug:slug>/', views.PostDetail.as_view(), name='post_detail'),
     path('<slug:slug>/', views.PostDetail, name='post_detail'),
+    path('<slug:slug>/tables/', views.get_tables, name='excel'),
     path('accounts/profile/', views.redirect_to_profile, name='redir'),
     path('accounts/profile/events/', views.redirect_to_event, name='redir_e'),
     path('accounts/profile/change/', views.redirect_to_change, name='redir_ch'),

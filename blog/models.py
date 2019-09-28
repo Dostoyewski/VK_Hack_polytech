@@ -45,6 +45,7 @@ class UserProfile(models.Model):
     #Согласие на обработку персональных данных в соответствие с Федеральным законом РФ от 27 июля 2006 года № 152-ФЗ «О персональных данных» *Если вы не даете согласия на обработку данных, то в соответствии с законом, все предоставленные вами данные будут немедленно удалены, и вы не будете внесены в список участников конференции *
     extended_profile = models.BooleanField(default=False)
     profile_image = models.ImageField(upload_to = 'images', default = 'images/no-img.jpg')
+    museums = models.CharField(max_length=1000, blank=True)
 
 
     def __str__(self):  
@@ -72,6 +73,7 @@ class Post(models.Model):
     ending_at = models.DateTimeField()
     users_registered = models.CharField(max_length=10000, blank=True)
     min_karma = models.FloatField(default=0)
+    museums = models.IntegerField(blank=True)
 
     class Meta:
         ordering = ['-created_on']

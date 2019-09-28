@@ -9,6 +9,9 @@
 					<p class="card-text flow-text">{{ content | safe }}</p>
 				</div>
 				<div class="card-action">
+					{% if user.is_authenticated and user.is_staff%}
+						<a href="tables"><i class="material-icons">file_download</i></a>
+					{% endif %}
 					{% if user.is_authenticated %}
 						{% if is_reg %}
 							<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Вы уже зарегистрированы</a>
@@ -35,7 +38,7 @@
 					<li class="collection-header"><h4><b>Волонтеры</b></h4></li>
 							{% for profile in uprofiles %}
 								<li class="collection-item"><a href='/users/{{profile.user_url}}/'><p class="flow-text">{{ profile.vorname }} {{profile.nachname}}</p></a>
-								{% if user.is_authenticated  and user.is_staff%}
+								{% if user.is_authenticated and user.is_staff%}
 								<a href='/users/{{profile.user_url}}/karmaplus'><i class="material-icons">arrow_upward</i></a>
 								<a href='/users/{{profile.user_url}}/karmaminus'><i class="material-icons">arrow_downward</i></a>
 								{% endif %}
