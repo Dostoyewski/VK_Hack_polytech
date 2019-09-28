@@ -18,12 +18,11 @@ TEMPLATES_DIR = os.path.join(BASE_DIR,'templates')
 
 ACCOUNT_ACTIVATION_DAYS = 2
 AUTH_USER_EMAIL_UNIQUE = True
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'info@google.ru'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'bill.jopper.wopper@gmail.com'
+EMAIL_HOST_PASSWORD = 'Fedos12345'
+EMAIL_USE_TLS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
