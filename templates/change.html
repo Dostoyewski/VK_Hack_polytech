@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<form action="{% url 'redir_ch' %}" method="post">
+<form action="{% url 'change_data' %}" method="post">
 {% csrf_token %}
 	<div class="field-title">
 	{% if flag %}
