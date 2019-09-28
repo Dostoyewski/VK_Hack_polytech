@@ -1,5 +1,8 @@
 {% extends 'base.html' %} {% block content %}
 			<div class="card #fafafa">
+			<div class="card-image">
+						  <img src="{{ post.image.url }}">
+						</div>
 				<div class="card-content #212121">
 					<h1>{% block title %} {{ title }} {% endblock title %}</h1>
 					<blockquote>
