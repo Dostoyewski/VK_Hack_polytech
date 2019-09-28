@@ -1,12 +1,9 @@
 {% extends 'base.html' %} {% block content %}
 {% load render_table from django_tables2 %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 card mb-4  mt-3 left  top">
-      <div class="card-body">
+      <div class="card #fafafa">
+		<div class="card-content #212121">
         <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
-		{% if user.is_authenticated %}
-			<p class="event_date"><b>Ваш ID:</b> {{ data }} <br> 
+			<p class="flow-text"><b>ID:</b> {{ data }} <br> 
 			<b>Имя:</b> {{ vorname }} <br>
 			<b>Фамилия:</b> {{ nachname }} <br>
 			<b>Краткая информация:</b> {{ bio }} <br>
@@ -16,18 +13,12 @@
 			<b>Ссылка ВК:</b> <a href={{ urlVK }} <br>{{ urlVK }}</a><br>
 			<b>Телефон:</b> {{ phone }} <br>
 			<b>Электронная почта:</b> {{ mail }} <br>
-		{% else %}
-		   Для того, чтобы увидеть свой профиль, <a href="{% url 'login'%}">войдите</a> или 
-		   <a href="/accounts/register">зарегистрирутесь.</a>
-		{% endif %} 
 		</div>
-		{% if user.is_authenticated %}
-			<a href="/accounts/profile/change" class="btn btn-default">Изменить личные данные</a>
-			<a href="/accounts/profile/events" class="btn btn-default">Мероприятия</a>
+		<div class="card-action">
+		{% if user.is_authenticated and flag %}
+			<a href="/accounts/profile/change" class="btn waves-effect waves-light  purple darken-4">Изменить личные данные</a>
 		{% endif %}
-    </div>
-    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
-  </div>
-</div>
-
+		<a href="/accounts/profile/events" class="btn waves-effect waves-light  purple darken-4">Мероприятия</a></p>
+		</div>
+	  </div>
 {% endblock content %}

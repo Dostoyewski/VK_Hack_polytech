@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from phonenumber_field.modelfields import PhoneNumberField
+from django.utils.text import slugify
 
 start_num = -1
 
@@ -16,22 +17,30 @@ class UserProfile(models.Model):
     karma = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     #Изменяемые
+    user_url = models.SlugField(max_length=200, unique=True)
     bio = models.TextField(max_length=500, blank=True, default='Не заполнено')
     location = models.CharField(max_length=30, default='Не указан')
     birth_date = models.DateField(null=True, blank=True)
     vorname = models.CharField(max_length=20, blank=True)
     nachname = models.CharField(max_length=50, blank=True)
     urlVK = models.CharField(max_length=100, blank=True)
-    phone = PhoneNumberField(null=False, blank=True, unique=True)
+    phone = PhoneNumberField(null=False, blank=True)
+    extended_profile = models.BooleanField(default=False)
+    # ЭТА ХУИТА НЕ РАБОТАЕТ
+    #profile_image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
+
 
     def __str__(self):  
         return "%s's profile" % self.user
 
 def create_user_profile(sender, instance, created, **kwargs):  
     if created:  
-        profile, created = UserProfile.objects.get_or_create(user=instance)  
+        profile, created = UserProfile.objects.get_or_create(user=instance)
+        profile.user_url = slugify(profile.user.email+profile.user.first_name)
+        profile.save()
 
 post_save.connect(create_user_profile, sender=User) 
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
