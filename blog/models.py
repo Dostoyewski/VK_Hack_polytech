@@ -91,7 +91,7 @@ class Museum(models.Model):
 
 class MuseumMember(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    museum = models.IntegerField(blank=True)
+    museum = models.OneToOneField(Museum, on_delete=models.CASCADE)
     vorname = models.CharField(max_length=20, blank=True)
     nachname = models.CharField(max_length=50, blank=True)
     role = models.CharField(max_length=50, blank=True)

@@ -17,10 +17,14 @@
 							<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Вы уже зарегистрированы</a>
 						{% else %}
 							{% if timeOK %}
-								{% if ka_ch %}
+								{% if ka_ch and not user.is_staff %}
 									<a href="event_register" class="btn waves-effect waves-light  purple darken-4">Зарегистрироваться</a>
 								{% else %}
-									<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Для регистрации на мероприятие не хватает кармы</a>
+									{% if user.is_staff %}
+										<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Модератор не может регистрироваться на мероприятие</a>
+									{% else %}
+										<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Для регистрации на мероприятие не хватает кармы</a>
+									{% endif %}
 								{% endif %}
 							{% else %}
 								<a href="event_register" class="btn waves-effect waves-light  purple darken-4" disabled>Регистрация закрыта</a>

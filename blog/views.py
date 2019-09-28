@@ -9,6 +9,9 @@ import datetime
 import pytz
 from .mes_confirmation import sent_verification_code
 import pandas as pd
+from twilio.rest import Client
+
+MODERATOR_NUMBER = '+79110874322'
 
 utc=pytz.UTC
 
@@ -268,3 +271,17 @@ def get_tables(request, slug):
     df.to_excel('media/table.xlsx')
     return HttpResponseRedirect('/media/table.xlsx')
     
+@login_required
+def museum_register(request, slug):
+    account_sid = 'AC256841cf8eca5f5133c45991d837598a'
+    auth_token = '15a1431a2d3f4ca8f859186e65aad860'
+    client = Client(account_sid, auth_token)
+    number = MODERATOR_NUMBER
+    mes = str(request.user.email) + ' хочет присоединиться к волонтерской программе вашего музея.'
+    message = client.messages \
+                    .create(
+                        body=mes,
+                        from_='+12055128793',
+                        to=number
+                    )
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
