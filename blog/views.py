@@ -97,6 +97,7 @@ def change(request, slug):
             profile.urlVK = form.cleaned_data['urlVK']
             profile.phone = form.cleaned_data['phone']
             profile.extended_profile = True
+            profile.location = form.cleaned_data['location']
             # ЭТА ХУИТА НЕ РАБОТАЕТ
             #profile.profile_image = form.cleaned_data['profile_image']
             profile.save()
