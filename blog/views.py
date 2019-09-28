@@ -105,6 +105,7 @@ def acc_det(request, slug):
         urlVK = a.urlVK
         phone = a.phone
         mail = a.user.email
+        image = a.profile_image.url
     except:
         pk = None
         bio = None
@@ -116,12 +117,13 @@ def acc_det(request, slug):
         urlVK = None
         phone = None
         mail = None
+        image = None
 
     return render(request, 'account.html', {'data': pk, 'bio': bio, 'location': location,
                                             'birth_date': birth_date, 'karma': karma,
                                             'vorname': vorname, 'nachname': nachname,
                                             'urlVK': urlVK, 'phone': phone, 'mail': mail, 
-                                            'flag': is_this_user, 'slug': slug})
+                                            'flag': is_this_user, 'slug': slug, 'image': image})
 
 def change(request, slug):
     try:
@@ -132,16 +134,18 @@ def change(request, slug):
         is_this_user = False
     if request.method == 'POST':
         profile = UserProfile.objects.get(user_id=request.user.pk)
-        form = ChangeForm(request.POST, initial={'bio': profile.bio, 'vorname': profile.vorname, 'nachname': profile.nachname,
+        form = ChangeForm(request.POST, request.FILES, initial={'bio': profile.bio, 'vorname': profile.vorname, 'nachname': profile.nachname,
                                                  'location': profile.location, 'birth_date': profile.birth_date, 'urlVK': profile.urlVK,
-                                                 'phone': profile.phone})
+                                                 'phone': profile.phone, 'work_place': profile.work_place, 'specialization': profile.specialization,
+                                                 'foreigns_lang': profile.foreigns_lang, 'volonteer_exp': profile.volonteer_exp, 'children_exp': profile.children_exp,
+                                                 'additional_skills': profile.additional_skills, 'expectations': profile.expectations, 'allergy': profile.allergy})
         if form.is_valid():
             profile = UserProfile.objects.get(user_id=request.user.pk)
             profile.bio = form.cleaned_data['bio']
             profile.birth_date = form.cleaned_data['birth_date']
             profile.vorname = form.cleaned_data['vorname']
             profile.nachname = form.cleaned_data['nachname']
-            if form.cleaned_data['urlVK'][:7] == 'http://':
+            if form.cleaned_data['urlVK'][:4] == 'http':
                 profile.urlVK = form.cleaned_data['urlVK']
             else:
                 profile.urlVK = 'http://' + form.cleaned_data['urlVK']
@@ -150,13 +154,22 @@ def change(request, slug):
             profile.location = form.cleaned_data['location']
             # ЭТА ХУИТА НЕ РАБОТАЕТ
             #profile.profile_image = form.cleaned_data['profile_image']
+            profile.specialization = form.cleaned_data['specialization']
+            profile.foreigns_lang = form.cleaned_data['foreigns_lang']
+            profile.volonteer_exp = form.cleaned_data['volonteer_exp']
+            profile.children_exp = form.cleaned_data['children_exp']
+            profile.expectations = form.cleaned_data['expectations']
+            profile.additional_skills = form.cleaned_data['additional_skills']
+            profile.allergy = form.cleaned_data['allergy']
             profile.save()
             return HttpResponseRedirect('/users/'+slug)
     else:
         profile = UserProfile.objects.get(user_id=request.user.pk)
         form = ChangeForm(initial={'bio': profile.bio, 'vorname': profile.vorname, 'nachname': profile.nachname,
                                                  'location': profile.location, 'birth_date': profile.birth_date, 'urlVK': profile.urlVK,
-                                                 'phone': profile.phone})
+                                                 'phone': profile.phone, 'work_place': profile.work_place, 'specialization': profile.specialization,
+                                                 'foreigns_lang': profile.foreigns_lang, 'volonteer_exp': profile.volonteer_exp, 'children_exp': profile.children_exp,
+                                                 'additional_skills': profile.additional_skills, 'expectations': profile.expectations, 'allergy': profile.allergy})
     return render(request, 'change.html', {'form': form, 'flag': is_this_user, 'slug': slug})
 
 def event_register(request, slug):

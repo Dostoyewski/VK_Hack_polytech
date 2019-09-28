@@ -44,8 +44,7 @@ class UserProfile(models.Model):
     allergy = models.TextField(max_length=500, blank=True, default='Не заполнено')
     #Согласие на обработку персональных данных в соответствие с Федеральным законом РФ от 27 июля 2006 года № 152-ФЗ «О персональных данных» *Если вы не даете согласия на обработку данных, то в соответствии с законом, все предоставленные вами данные будут немедленно удалены, и вы не будете внесены в список участников конференции *
     extended_profile = models.BooleanField(default=False)
-    # ЭТА ХУИТА НЕ РАБОТАЕТ
-    #profile_image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
+    profile_image = models.ImageField(upload_to = 'images', default = 'images/no-img.jpg')
 
 
     def __str__(self):  

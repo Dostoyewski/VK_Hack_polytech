@@ -1,9 +1,11 @@
 {% extends 'base.html' %} {% block content %}
+		<div class="center">
 			<ul class="collection with-header">
 					<li class="collection-header"><h4><b>Музеи, участвующие в программе</b></h4></li>
 							{% for profile in mprofiles %}
 								<li class="collection-item"><a href='/museums/{{profile.slug}}/'><p class="flow-text">{{ profile.name }}</p></a>
-								<img src="{{ profile.image.url }}" width="200" height="100" alt="Computer Hope">
+								<img src="{{ profile.image.url }}" width="200" height="100" alt="Computer Hope"></li>
 							{% endfor %}
 					</ul>
+		</div>
 {% endblock content %}

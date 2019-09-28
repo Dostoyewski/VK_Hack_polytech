@@ -14,7 +14,7 @@ class ChangeForm(forms.Form):
     #Место учебы/работы
     work_place = forms.CharField(max_length=500, label='Место учебы/работы')
     #Специальность по диплому  
-    work_place = forms.CharField(max_length=500, label='Специальность по диплому')
+    specialization = forms.CharField(max_length=500, label='Специальность по диплому')
     #Какими иностранными языками Вы владеете (укажите уровень владения)? *
     foreigns_lang = forms.CharField(max_length=500, label='Какими иностранными языками Вы владеете (укажите уровень владения)? *')
     #Есть ли у вас опыт волонтерства? Если есть, то опишите его. Если нет - это не страшно)) *
