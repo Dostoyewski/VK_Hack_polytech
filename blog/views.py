@@ -98,7 +98,7 @@ def change(request, slug):
             profile.phone = form.cleaned_data['phone']
             profile.extended_profile = True
             profile.save()
-            return HttpResponseRedirect('/users/'+slug)
+            return HttpResponseRedirect('/users/'+slug+'/')
     else:
         form = ChangeForm()
     return render(request, 'change.html', {'form': form, 'flag': is_this_user, 'slug': slug})
