@@ -98,7 +98,7 @@ def change(request, slug):
             profile.phone = form.cleaned_data['phone']
             profile.extended_profile = True
             profile.save()
-            return HttpResponseRedirect('/users/'+slug+'/')
+            return HttpResponseRedirect('/users/'+slug)
     else:
         form = ChangeForm()
     return render(request, 'change.html', {'form': form, 'flag': is_this_user, 'slug': slug})
@@ -119,28 +119,28 @@ def event_register(request, slug):
 def redirect_to_profile(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/')
+        return HttpResponseRedirect('/users/'+slug)
     except:
         return HttpResponseRedirect('/')
 
 def redirect_to_event(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/events/')
+        return HttpResponseRedirect('/users/'+slug+'/events')
     except:
         return HttpResponseRedirect('/')
 
 def redirect_to_change(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/change/')
+        return HttpResponseRedirect('/users/'+slug+'/change')
     except:
         return HttpResponseRedirect('/')
 
 def redirect_to_arhive(request):
     try:
         slug = UserProfile.objects.get(user_id=request.user.pk).user_url
-        return HttpResponseRedirect('/users/'+slug+'/arhive/')
+        return HttpResponseRedirect('/users/'+slug+'/arhive')
     except:
         return HttpResponseRedirect('/')
 
