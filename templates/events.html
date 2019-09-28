@@ -2,7 +2,6 @@
 {% load render_table from django_tables2 %}
       <div class="card-body">
         <h1>{% block title %} {{ object.title }} {% endblock title %}</h1>
-		{% if user.is_authenticated %}
 			{% if length != 0 %}
 			<ul class="collection with-header">
 			<li class="collection-header"><h4><b>Текущие зарегистированные мероприятия</b></h4></li>
@@ -15,10 +14,6 @@
 			{% endif %}
 			<a href="/accounts/profile" class="btn waves-effect waves-light  purple darken-4">Профиль</a>
 			<a href="/accounts/profile/arhive" class="btn waves-effect waves-light  purple darken-4">Архив</a>
-		{% else %}
-		   <p class="flow-text">Для того, чтобы увидеть свои мероприятия, <a href="{% url 'login'%}">войдите</a> или 
-		   <a href="/accounts/register">зарегистрирутесь.</a></p>
-		{% endif %} 
 		</div>
 
 {% endblock content %}
