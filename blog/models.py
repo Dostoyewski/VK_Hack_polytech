@@ -71,7 +71,7 @@ class Post(models.Model):
     beginning_at = models.DateTimeField()
     ending_at = models.DateTimeField()
     users_registered = models.CharField(max_length=10000, blank=True)
-    min_karma = models.IntegerField(default=0)
+    min_karma = models.FloatField(default=0)
 
     class Meta:
         ordering = ['-created_on']

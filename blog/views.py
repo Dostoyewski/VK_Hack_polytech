@@ -206,32 +206,16 @@ def my_arhive(request, slug):
 
 @login_required
 def karmaplus(request, slug):
-    now = utc.localize(datetime.datetime.now())
-    user_profile = UserProfile.objects.get(user_id=request.user.pk)
     comment_profile = UserProfile.objects.get(user_url=slug)
-    if now.hour == 0 and now.minute == 0:
-        user_profile.karma_counts = 5
-        user_profile.save()
-    if user_profile.karma >= 0 and user_profile != comment_profile and user_profile.karma_counts > 0:
-        comment_profile.karma += 0.1
-        user_profile.karma_counts -= 1
-        user_profile.save()
-        comment_profile.save()
+    comment_profile.karma += 0.1
+    comment_profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required
 def karmaminus(request, slug):
-    now = utc.localize(datetime.datetime.now())
-    user_profile = UserProfile.objects.get(user_id=request.user.pk)
     comment_profile = UserProfile.objects.get(user_url=slug)
-    if now.hour == 0 and now.minute == 0:
-        user_profile.karma_counts = 5
-        user_profile.save()
-    if user_profile.karma >= 0 and user_profile != comment_profile and user_profile.karma_counts > 0:
-        comment_profile.karma -= 0.1
-        user_profile.karma_counts -= 1
-        user_profile.save()
-        comment_profile.save()
+    comment_profile.karma -= 0.1
+    comment_profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 '''
 def approve_comment(request):
