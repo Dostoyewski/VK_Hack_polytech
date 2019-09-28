@@ -11,7 +11,6 @@ from .mes_confirmation import sent_verification_code
 
 utc=pytz.UTC
 
-
 class PostList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by('-created_on')
     template_name = 'index.html'
@@ -23,33 +22,43 @@ class PostList(generic.ListView):
 #    template_name = 'post_detail.html'
 
 def PostDetail(request, slug):
-    event = Post.objects.get(slug=slug)
-    is_reg = False
-    karma_check = True
-    is_full = False
-    can_vote = False
-    users_ids = event.users_registered.split(sep=', ')
-    uprofiles = []
-    for idd in users_ids:
+    if slug == 'users':
+        last_pk = UserProfile.objects.last().pk+1
+        uprofiles = []
+        for i in range(0, last_pk):
+            try:
+                uprofiles.append(UserProfile.objects.get(pk=i))
+            except:
+                pass
+        return render(request, 'users.html', {'uprofiles': uprofiles})
+    else:
+        event = Post.objects.get(slug=slug)
+        is_reg = False
+        karma_check = True
+        is_full = False
+        can_vote = False
+        users_ids = event.users_registered.split(sep=', ')
+        uprofiles = []
+        for idd in users_ids:
+            try:
+                uprofiles.append(UserProfile.objects.get(user_id=int(idd)))
+            except:
+                pass
         try:
-            uprofiles.append(UserProfile.objects.get(user_id=int(idd)))
+            profile = UserProfile.objects.get(user_id=request.user.pk)
+            is_full = profile.extended_profile
+            if profile.karma_counts > 0:
+                can_vote = True
+            evreg = profile.events_registered.split(sep=', ')
+            if str(event.pk) in evreg:
+                is_reg = True
+            if profile.karma < event.min_karma:
+                karma_check = False
         except:
             pass
-    try:
-        profile = UserProfile.objects.get(user_id=request.user.pk)
-        is_full = profile.extended_profile
-        if profile.karma_counts > 0:
-            can_vote = True
-        evreg = profile.events_registered.split(sep=', ')
-        if str(event.pk) in evreg:
-            is_reg = True
-        if profile.karma < event.min_karma:
-            karma_check = False
-    except:
-        pass
-    return render(request, 'post_detail2.html', {'title': event.title, 'beginning_at': event.beginning_at, 'ending_at': event.ending_at,
-                                                'author': event.author, 'created_on': event.created_on, 'content': event.content, 
-                                                'is_reg': is_reg, 'ka_ch': karma_check, 'uprofiles': uprofiles, 'can_vote': can_vote})
+        return render(request, 'post_detail2.html', {'title': event.title, 'beginning_at': event.beginning_at, 'ending_at': event.ending_at,
+                                                    'author': event.author, 'created_on': event.created_on, 'content': event.content, 
+                                                    'is_reg': is_reg, 'ka_ch': karma_check, 'uprofiles': uprofiles, 'can_vote': can_vote})
 
 def acc_det(request, slug):
     #Дефолтные поля не предусмотрены. Ввод ссылок только с http
@@ -166,7 +175,6 @@ def redirect_to_arhive(request):
     except:
         return HttpResponseRedirect('/')
 
-#Дописать функцию сортировки!!
 def my_events(request, slug):
     profile = UserProfile.objects.get(user_url=slug)
     evreg = profile.events_registered.split(sep=', ')

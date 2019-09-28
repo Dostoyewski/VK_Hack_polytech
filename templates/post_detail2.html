@@ -31,7 +31,7 @@
 					<li class="collection-header"><h4><b>Волонтеры</b></h4></li>
 							{% for profile in uprofiles %}
 								<li class="collection-item"><a href='/users/{{profile.user_url}}/'><p class="flow-text">{{ profile.vorname }} {{profile.nachname}}</p></a>
-								{% if user.is_authenticated  and is_reg and can_vote%}
+								{% if user.is_authenticated  and user.is_staff%}
 								<a href='/users/{{profile.user_url}}/karmaplus'><i class="material-icons">arrow_upward</i></a>
 								<a href='/users/{{profile.user_url}}/karmaminus'><i class="material-icons">arrow_downward</i></a>
 								{% endif %}
