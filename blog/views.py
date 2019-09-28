@@ -110,6 +110,8 @@ def acc_det(request, slug):
         phone = a.phone
         mail = a.user.email
         image = a.profile_image.url
+        have_card = not (a.card_id == 'AA1234')
+        card_id = a.card_id
     except:
         pk = None
         bio = None
@@ -122,12 +124,14 @@ def acc_det(request, slug):
         phone = None
         mail = None
         image = None
+        have_card = True
+        card_id = None
 
     return render(request, 'account.html', {'data': pk, 'bio': bio, 'location': location,
                                             'birth_date': birth_date, 'karma': karma,
                                             'vorname': vorname, 'nachname': nachname,
                                             'urlVK': urlVK, 'phone': phone, 'mail': mail, 
-                                            'flag': is_this_user, 'slug': slug, 'image': image})
+                                            'flag': is_this_user, 'slug': slug, 'image': image, 'have_card': have_card, 'card_id': card_id})
 
 def change(request, slug):
     try:
@@ -284,4 +288,25 @@ def museum_register(request, slug):
                         from_='+12055128793',
                         to=number
                     )
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def random_card_key():
+    alphabet = set('A B C D E F G H I J K L M N O P Q R S T U V W X Y Z'.split())
+    numeral = set('0 1 2 3 4 5 6 7 8 9'.split())
+    x = ''
+    for i in range(2):
+        x += alphabet.pop()
+    for i in range(4):
+        x += numeral.pop()
+    return x
+
+def barcode_generator(code:str):
+    url = "https://barcode.tec-it.com/barcode.ashx?data=" + code + "&code=Code128&dpi=96&dataseparator="
+    return url
+
+def create_card(request, slug):
+    profile = UserProfile.objects.get(user_url=slug)
+    if profile.card_id == 'AA1234':
+        profile.card_id = random_card_key()
+        profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

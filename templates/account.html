@@ -14,12 +14,19 @@
 			<b>Ссылка ВК:</b> <a href={{ urlVK }} <br>{{ urlVK }}</a><br>
 			<b>Телефон:</b> {{ phone }} <br>
 			<b>Электронная почта:</b> {{ mail }} <br>
+			{% if card_id != 'AA1234' and karma > 1%}
+				<b>Номер карты "Спутник":</b> {{ card_id }}<br>
+				<img src="https://barcode.tec-it.com/barcode.ashx?data={{ card_id }}&code=Code128&dpi=96&dataseparator=">
+			{% endif %}
 		</div>
 		<div class="card-action">
 		{% if user.is_authenticated and flag %}
 			<a href="/users/{{slug}}/change" class="btn waves-effect waves-light  purple darken-4">Изменить личные данные</a>
 		{% endif %}
 		<a href="/users/{{slug}}/events" class="btn waves-effect waves-light  purple darken-4">Мероприятия</a></p>
+		{% if karma > 5 and have_card == False %}
+			<a href="/users/{{slug}}/create" class="btn waves-effect waves-light  purple darken-4">Получить карту</a></p>
+		{% endif %}
 		</div>
 	  </div>
 {% endblock content %}

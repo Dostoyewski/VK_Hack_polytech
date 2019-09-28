@@ -3,7 +3,11 @@
 {% block content %}
 
 				{% for post in post_list %}
-					<div class="card #fafafa">
+					<div class="card #fafafa hoverable hide-on-small-only horizontal">
+						<div class="card-image">
+						  <img src="{{ post.image.url }}">
+						</div>
+						<div class="card-stacked">
 						<div class="card-content #212121">
 							<span class="card-title" style="font-size: 40px;">{{ post.title }}</span>
 							<p class="text-muted h5">{{ post.Author }} | {{ post.created_on}} </p>
@@ -12,6 +16,21 @@
 						<div class="card-action">
 							<a href="{% url 'post_detail' post.slug  %}" class="btn waves-effect waves-light  purple darken-4">Подробнее</a>
 						</div>
+						</div>
+					</div>
+					<div class="card #fafafa hoverable hide-on-med-and-up">
+						<div class="card-image">
+							<img src="{{ post.image.url }}">
+						</div>
+						<div class="card-content #212121">
+							<span class="card-title" style="font-size: 40px;">{{ post.title }}</span>
+							<p class="text-muted h5">{{ post.Author }} | {{ post.created_on}} </p>
+							<p class="flow-text">{{post.content|slice:":200" }}</p>
+						</div>
+						<div class="card-action">
+							<a href="{% url 'post_detail' post.slug  %}" class="btn waves-effect waves-light  purple darken-4">Подробнее</a>
+						</div>
+					
 					</div>
 				{% endfor %}
 {%endblock%}

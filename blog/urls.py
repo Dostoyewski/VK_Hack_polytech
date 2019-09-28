@@ -20,4 +20,5 @@ urlpatterns = [
     path('museums/', views.MuseumsList, name='museums'),
     path('museums/<slug:slug>/', views.MuseumDetail.as_view(), name='museum_detail'),
     path('museums/<slug:slug>/register', views.museum_register, name='museum_register'),
+    path('users/<slug:slug>/create/', views.create_card, name='card'),
 ]

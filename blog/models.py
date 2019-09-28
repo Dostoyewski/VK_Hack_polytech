@@ -18,6 +18,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     karma_counts = models.IntegerField(default=5)
     user_url = models.SlugField(max_length=200, unique=True)
+    card_id = models.CharField(max_length=6, default='AA1234')
     #Изменяемые
     bio = models.TextField(max_length=500, blank=True, default='Не заполнено')
     location = models.CharField(max_length=30, default='Не указан')
@@ -74,6 +75,7 @@ class Post(models.Model):
     users_registered = models.CharField(max_length=10000, blank=True)
     min_karma = models.FloatField(default=0)
     museums = models.IntegerField(blank=True)
+    image = models.ImageField(upload_to = 'images', default = 'images/event-no-image.png')
 
     class Meta:
         ordering = ['-created_on']

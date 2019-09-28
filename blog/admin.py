@@ -3,7 +3,7 @@ from .models import Post, UserProfile, Museum, MuseumMember
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'status','created_on', 'beginning_at', 'ending_at')
+    list_display = ('title', 'slug', 'status','created_on', 'beginning_at', 'ending_at', 'image')
     list_filter = ("status",)
     search_fields = ['title', 'content', 'beginning_at', 'ending_at']
     prepopulated_fields = {'slug': ('title',)}
