@@ -138,7 +138,8 @@ def event_register(request, slug):
     '''Функция регистрации на событие'''
     event = Post.objects.get(slug=slug)
     profile = UserProfile.objects.get(user_id=request.user.pk)
-    if profile.karma >= event.min_karma:
+    now = utc.localize(datetime.datetime.now())
+    if profile.karma >= event.min_karma and now <= event.beginning_at:
         event.users_registered += str(request.user.pk)+', '
         profile.events_registered += str(event.pk) + ', '
         profile.save()

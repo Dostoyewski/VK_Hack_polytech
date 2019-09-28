@@ -79,3 +79,16 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+class Museum(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, blank=True)
+    description = models.TextField(max_length=500, blank=True, default='Не заполнено')
+    image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
+    members = models.TextField(max_length=500, blank=True, default='')
+
+class MuseumMember(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    vorname = models.CharField(max_length=20, blank=True)
+    nachname = models.CharField(max_length=50, blank=True)
+    role = models.CharField(max_length=50, blank=True)
+    image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
