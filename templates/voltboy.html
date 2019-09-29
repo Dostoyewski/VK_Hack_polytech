@@ -1,8 +1,12 @@
 {% extends "base.html" %}
       
 {% block content %}
-				<div style="text-align: center;">
-				<img src="/media/images/under_constraction.png">
-				<div>
-				<h1 class="center-align">Under construction</h1>
+	{% if user.is_authenticated %}
+		<div style="text-align: center;">
+		<img src="/media/images/under_constraction.png">
+		<div>
+		<h1 class="center-align">Under construction</h1>
+	{% else %}
+		<b>Для того, чтобы зарегистрироваться на это мероприятие,</b> <a href="{% url 'login'%}" style="color: #4a148c; font-size: 20px;">войдите</a><b>или</b> <a href="/accounts/register" style="color: #4a148c;">зарегистрирутесь.</a>
+	{% endif %}
 {%endblock%}
