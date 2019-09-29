@@ -325,3 +325,5 @@ def create_card(request, slug):
         profile.card_id = random_card_key()
         profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+def voltboy(request, slug):
+    return render(request, 'voltboy.html')
