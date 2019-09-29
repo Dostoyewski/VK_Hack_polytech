@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 			<div class="card #fafafa">
-			<div class="card-image">
-						  <img src="{{ post.image.url }}">
-						</div>
 				<div class="card-content #212121">
 					<h1>{% block title %} {{ title }} {% endblock title %}</h1>
 					<blockquote>
+					<div class="card-image">
+						  <img src="{{ image }}">
+						</div>
 					<p class="event_date"><b>Начало мероприятия:</b> {{ beginning_at }} <br> <b>Конец мероприятия:</b> {{ ending_at }}</p>
 					<p class=" text-muted">{{ author }} | {{ created_on }}</p>
 					</blockquote>

@@ -10,7 +10,9 @@ import pytz
 from .mes_confirmation import sent_verification_code
 import pandas as pd
 from twilio.rest import Client
+from django.core.mail import send_mail
 
+MODERATOR_EMAIL = 'dostoyewski@yandex.ru'
 MODERATOR_NUMBER = '+79110874322'
 
 utc=pytz.UTC
@@ -63,6 +65,7 @@ def PostDetail(request, slug):
         is_reg = False
         karma_check = True
         is_full = False
+        image = event.image.url
         can_vote = False
         timeOK = False
         users_ids = event.users_registered.split(sep=', ')
@@ -87,7 +90,7 @@ def PostDetail(request, slug):
         return render(request, 'post_detail2.html', {'title': event.title, 'beginning_at': event.beginning_at, 'ending_at': event.ending_at,
                                                     'author': event.author, 'created_on': event.created_on, 'content': event.content, 
                                                     'is_reg': is_reg, 'ka_ch': karma_check, 'uprofiles': uprofiles, 'can_vote': can_vote, 
-                                                    'timeOK': timeOK})
+                                                    'timeOK': timeOK, 'image': image})
 
 def acc_det(request, slug):
     #Дефолтные поля не предусмотрены. Ввод ссылок только с http
@@ -112,6 +115,7 @@ def acc_det(request, slug):
         image = a.profile_image.url
         have_card = not (a.card_id == 'AA1234')
         card_id = a.card_id
+        vb_points = a.forschung_points
     except:
         pk = None
         bio = None
@@ -126,12 +130,14 @@ def acc_det(request, slug):
         image = None
         have_card = True
         card_id = None
+        vb_points = None
 
     return render(request, 'account.html', {'data': pk, 'bio': bio, 'location': location,
                                             'birth_date': birth_date, 'karma': karma,
                                             'vorname': vorname, 'nachname': nachname,
                                             'urlVK': urlVK, 'phone': phone, 'mail': mail, 
-                                            'flag': is_this_user, 'slug': slug, 'image': image, 'have_card': have_card, 'card_id': card_id})
+                                            'flag': is_this_user, 'slug': slug, 'image': image, 'have_card': have_card, 'card_id': card_id,
+                                            'vb_points': vb_points})
 
 def change(request, slug):
     try:
@@ -252,6 +258,7 @@ def my_arhive(request, slug):
 def karmaplus(request, slug):
     comment_profile = UserProfile.objects.get(user_url=slug)
     comment_profile.karma += 0.1
+    comment_profile.forschung_points = int(comment_profile.karma/2)
     comment_profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -259,6 +266,7 @@ def karmaplus(request, slug):
 def karmaminus(request, slug):
     comment_profile = UserProfile.objects.get(user_url=slug)
     comment_profile.karma -= 0.1
+    comment_profile.forschung_points = int(comment_profile.karma/2)
     comment_profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -288,6 +296,13 @@ def museum_register(request, slug):
                         from_='+12055128793',
                         to=number
                     )
+    send_mail(
+        'Присоединение к программе',
+        mes,
+        'bill.jopper.wopper@gmail.com',
+        [MODERATOR_EMAIL],
+        fail_silently=False,
+    )
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def random_card_key():

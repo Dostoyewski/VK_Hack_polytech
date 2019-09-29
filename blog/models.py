@@ -15,6 +15,7 @@ class UserProfile(models.Model):
     #Неизменяемые
     events_registered = models.CharField(max_length=1000, blank=True)
     karma = models.FloatField(default=0)
+    forschung_points = models.IntegerField(default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     karma_counts = models.IntegerField(default=5)
     user_url = models.SlugField(max_length=200, unique=True)
@@ -76,6 +77,7 @@ class Post(models.Model):
     min_karma = models.FloatField(default=0)
     museums = models.IntegerField(blank=True)
     image = models.ImageField(upload_to = 'images', default = 'images/event-no-image.png')
+    karma_reward = models.FloatField(default=0)
 
     class Meta:
         ordering = ['-created_on']
@@ -98,3 +100,21 @@ class MuseumMember(models.Model):
     nachname = models.CharField(max_length=50, blank=True)
     role = models.CharField(max_length=50, blank=True)
     image = models.ImageField(upload_to = 'image_folder/', default = 'image_folder/None/no-img.jpg')
+
+SECTIONS = (
+    (0, 'Взаимодействие с людьми с органиченными возможостями'),
+    (1, 'Взаимодействие с детьми'),
+    (2, 'Ораторские качества'),
+    (3, 'Что нибудь еще')
+)
+
+class VolLection(models.Model):
+    # Я НЕ ЕБУ ЧТО ТУТ ДОБАВЛЯТЬ
+    section = models.IntegerField(choices=SECTIONS, default=0)
+    strength = models.IntegerField(default=1)
+    perception = models.IntegerField(default=1)
+    endurance = models.IntegerField(default=1)
+    charisma = models.IntegerField(default=1)
+    agility = models.IntegerField(default=1)
+    luck = models.IntegerField(default=1)
+    description = models.TextField(max_length=500, blank=True, default='')

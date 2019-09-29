@@ -14,9 +14,10 @@
 			<b>Ссылка ВК:</b> <a href={{ urlVK }} <br>{{ urlVK }}</a><br>
 			<b>Телефон:</b> {{ phone }} <br>
 			<b>Электронная почта:</b> {{ mail }} <br>
+			<b>Очки исследования системы VolBoy:</b> {{vb_points}} <br>
 			{% if card_id != 'AA1234' and karma > 1%}
 				<b>Номер карты "Спутник":</b> {{ card_id }}<br>
-				<img src="https://barcode.tec-it.com/barcode.ashx?data={{ card_id }}&code=Code128&dpi=96&dataseparator=">
+				<img src="https://barcode.tec-it.com/barcode.ashx?data={{ card_id }}&code=Code128&dpi=96&dataseparator="><br>
 			{% endif %}
 		</div>
 		<div class="card-action">
