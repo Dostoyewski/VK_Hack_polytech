@@ -124,6 +124,22 @@ def getNextEvent(id):
     return min_pos(a)
 
 
+def getLink(name):
+    url = URL + "api/v1/post/getlist"
+    data = requests.get(url).json()
+    for i in data:
+        if name in i['title'].lower():
+            return 'http://demo14.alpha.vkhackathon.com:8000/' + i['slug']
+    return 'Такого мероприятия нет('
+
+def getCard(id):
+    data = getUserById['card_id']
+    if data  == 'AA1234':
+        return 'Карта "Спутник" не зарегистрирована'
+    else:
+        sendMessage(data, id)
+        return 'https://barcode.tec-it.com/barcode.ashx?data=' + data + '&code=Code128&dpi=96&dataseparator='
+
 def checkRegistered(id):
     url = URL + "api/v1/acc/getlist/"
     data = requests.get(url).json()
@@ -149,11 +165,11 @@ def messagesHendler():
                 user = event.user_id
 
                 if event.text.lower() == "помоги" or event.text.lower() == "help" or event.text.lower() == "помощь":
-                    sendMessage("Вы можете использовать команды :\n Покажи мои мероприятия\n Покажи карму\n Расскажи о 'Название мероприятия'\n Покажи все мероприятия\n Покажи следующее мероприятие",  user)
+                    sendMessage("Вы можете использовать команды :\n Покажи мои мероприятия\n Покажи карму\n Расскажи о 'Название мероприятия'\n Покажи все мероприятия\n Покажи следующее мероприятие\n Зарегистрируй меня на 'название мероприятие'",  user)
                 
                 elif "привет" in event.text.lower():
                     sendMessage('Привет!', user)
-                    sendMessage("Вы можете использовать команды :\n Покажи мои мероприятия\n Покажи карму\n Расскажи о 'Название мероприятия'\n Покажи все мероприятия\n Покажи следующее мероприятие",  user)
+                    sendMessage("Вы можете использовать команды :\n Покажи мои мероприятия\n Покажи карму\n Расскажи о 'Название мероприятия'\n Покажи все мероприятия\n Покажи следующее мероприятие\n Зарегистрируй меня на 'название мероприятие'",  user)
 
                 elif "расскажи о" in event.text.lower():
                     strlen = len("расскажи о ")
@@ -171,9 +187,15 @@ def messagesHendler():
                 elif "покажи следующее мероприятие" in event.text.lower():
                     sendMessage(getNextEvent(user), user)
 
+                elif "зарегистрируй меня на " in event.text.lower():
+                    sendMessage(getLink(event.text.lower()[22:]), user)
+
+                elif "покажи мою карту" in event.text.lower():
+                    sendMessage(getCard(user), user)
+
                 else:
                     sendMessage('Я тебя не понял', user)
-                    sendMessage("Вы можете использовать команды :\n Покажи мои мероприятия\n Покажи карму\n Расскажи о 'Название мероприятия'\n Покажи все мероприятия\n Покажи следующее мероприятие",  user)
+                    sendMessage("Вы можете использовать команды :\n Покажи мои мероприятия\n Покажи карму\n Расскажи о 'Название мероприятия'\n Покажи все мероприятия\n Покажи следующее мероприятие\n Зарегистрируй меня на 'название мероприятие'",  user)
                     
 
             else:

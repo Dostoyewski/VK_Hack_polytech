@@ -4,8 +4,8 @@ from django.urls import path
 urlpatterns = [
     path('', views.PostList.as_view(), name='home'),
     #path('<slug:slug>/', views.PostDetail.as_view(), name='post_detail'),
-    path('<slug:slug>/', views.PostDetail, name='post_detail'),
-    path('<slug:slug>/tables/', views.get_tables, name='excel'),
+    path('<slug:slug>/', views.PostDetail2, name='post_detail'),
+    path('<slug:slug>/tables/', views.get_tables2, name='excel'),
     path('accounts/profile/', views.redirect_to_profile, name='redir'),
     path('accounts/profile/events/', views.redirect_to_event, name='redir_e'),
     path('accounts/profile/change/', views.redirect_to_change, name='redir_ch'),
@@ -22,5 +22,5 @@ urlpatterns = [
     path('museums/<slug:slug>/register', views.museum_register, name='museum_register'),
     path('users/<slug:slug>/create/', views.create_card, name='card'),
     path('users/<slug:slug>/voltboy/', views.voltboy, name='voltboy'),
-
+    path('users/tables/', views.get_users_sorted_by_karma, name='get_karma_sorted'),
 ]

@@ -5,4 +5,7 @@
 								<li class="collection-item"><a href='/users/{{profile.user_url}}/'><p class="flow-text">{{ profile.vorname }} {{profile.nachname}}</p></a>
 							{% endfor %}
 					</ul>
+					{% if user.is_authenticated and user.is_staff%}
+						<a href="tables"><i class="material-icons">file_download</i></a>
+					{% endif %}
 {% endblock content %}

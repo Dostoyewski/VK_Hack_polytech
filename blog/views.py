@@ -41,7 +41,7 @@ def MuseumsList(request):
             pass
     return render(request, 'museums.html', {'mprofiles': mprofiles})
 
-def PostDetail(request, slug):
+def PostDetail2(request, slug):
     if slug == 'museums':
         last_pk = Museum.objects.last().pk+1
         mprofiles = []
@@ -270,18 +270,21 @@ def karmaminus(request, slug):
     comment_profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def get_tables(request, slug):
-    event = Post.objects.get(slug=slug)
-    users = event.users_registered.split(sep=', ')
-    uprofiles = []
-    for idd in users:
-        try:
-            uprofiles.append([UserProfile.objects.get(user_id=int(idd)).nachname, UserProfile.objects.get(user_id=int(idd)).vorname, UserProfile.objects.get(user_id=int(idd)).phone, UserProfile.objects.get(user_id=int(idd)).user.email])
-        except:
-            pass
-    df = pd.DataFrame(uprofiles)
-    df.to_excel('media/table.xlsx')
-    return HttpResponseRedirect('/media/table.xlsx')
+def get_tables2(request, slug):
+    if not ('users' in slug):
+        event = Post.objects.get(slug=slug)
+        users = event.users_registered.split(sep=', ')
+        uprofiles = []
+        for idd in users:
+            try:
+                uprofiles.append([UserProfile.objects.get(user_id=int(idd)).nachname, UserProfile.objects.get(user_id=int(idd)).vorname, UserProfile.objects.get(user_id=int(idd)).phone, UserProfile.objects.get(user_id=int(idd)).user.email, UserProfile.objects.get(user_id=int(idd)).user.karma])
+            except:
+                pass
+        df = pd.DataFrame(uprofiles)
+        df.to_excel('media/table.xlsx')
+        return HttpResponseRedirect('/media/table.xlsx')
+    else:
+        return get_users_sorted_by_karma(request, slug)
     
 @login_required
 def museum_register(request, slug):
@@ -325,5 +328,21 @@ def create_card(request, slug):
         profile.card_id = random_card_key()
         profile.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 def voltboy(request, slug):
     return render(request, 'voltboy.html')
+
+def get_users_sorted_by_karma(request, slug):
+    users = UserProfile.objects.order_by('-karma')
+    uprofiles = []
+    for puser in users:
+        try:
+            uid = puser.__dict__['user_id']
+            mail = User.objects.get(pk=uid).email
+            staff = User.objects.get(pk=uid).is_staff
+            uprofiles.append([puser.__dict__['nachname'], puser.__dict__['vorname'], puser.__dict__['phone'], mail, puser.__dict__['karma'], staff])
+        except:
+            pass
+    df = pd.DataFrame(uprofiles, columns=['Фамилия', 'Имя', 'Телефон', 'Почта', 'Карма', 'Модератор'])
+    df.to_excel('media/volonteers.xlsx')
+    return HttpResponseRedirect('/media/volonteers.xlsx')
